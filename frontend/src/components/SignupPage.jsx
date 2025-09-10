@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { CognitoUserPool, CognitoUser } from "amazon-cognito-identity-js";
 import { Mail, Lock, KeyRound } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // AWS Cognito configuration (⚠️ move to environment variables in production)
 const poolData = {
-  UserPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID, // Cognito User Pool ID
-  ClientId: process.env.REACT_APP_COGNITO_CLIENT_ID, // Cognito App Client ID
+  UserPoolId: "ca-central-1_AwZVWIHNE", // Cognito User Pool ID
+  ClientId: "1qm0s9vekvkhfscpnntr1jaaq6", // Cognito App Client ID
 };
 
 const userPool = new CognitoUserPool(poolData);
@@ -26,6 +27,7 @@ function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   /**
    * Handle user signup.
@@ -81,7 +83,10 @@ function SignupPage() {
         setError(err.message || "Verification failed");
         return;
       }
-      setSuccess("Email verified! You can now log in.");
+      setSuccess("Email verified! Redirecting to login...");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
     });
   };
 
